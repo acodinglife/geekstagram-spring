@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>reveal.js – The HTML Presentation Framework</title>
+
+	<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+	<meta name="author" content="Hakim El Hattab">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+	<!-- Code syntax highlighting -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+	var link = document.createElement( 'link' );
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+	document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+	<div class="reveal">
+
+		<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides">
+			<section>
+				<h1>Geekstagram</h1>
+				<h3>Built on top of Spring 4</h3>
+				<p>
+					<small>Created by <a href="https://www.linkedin.com/profile/view?id=AAIAAA3Mw-0B0ozNBcY_nRhHXVEGcOud4iY3kHA">Marvin Frachet</a> / <a href="https://twitter.com/skahrn">@skahrn</a></small>
+				</p>
+			</section>
+
+			<section>
+				<section>
+					<h2>Spring sum up</h2>
+					<p>
+						Awesome Framework improving productivity and efficiency, easy to use, easy testing
+					</p>
+				</section>
+				<section>
+					<h2>Projects and tools</h2>
+					<p>
+						Spring Boot (embeded server, easy configurations)
+					</p>
+					<p>
+						Spring Framework (dependency injection, data access and many others)
+					</p>
+				</section>
+				<section>
+					<h2>REST API</h2>
+					<ul>
+						<li>Spring REST with <i>@RestController</i> annotation</li>
+						<li>	Spring JPA with <i>CrudRepository</i> interface</li>
+						<li>Spring Framework and DI with <i>@Component</i>, <i>@Qualifier</i>, <i>@Autowired</i> annotations</li>
+						<li>Unit testing with <i>JUNIT</i></li>
+					</ul>
+				</section>
+			</section>
+
+
+
+			<section data-background="#E91E63">
+				<h2>Built a full application<h2>
+				</section>
+
+				<section data-background="#3F51B5">
+					<section>
+						<h2>Spring MVC (TODO)</h2>
+						<p>
+							Creating a social like application
+						</p>
+					</section>
+					<section>
+						<h2>How it works</h2>
+						<ul>
+							<li>Spring MVC allows to create application with MVC pattern</li>
+							<li>Works the same way than Spring REST</li>
+							<li>Quick start with Spring Boot</li>
+						</ul>
+					</section>
+
+				</section>
+
+				<section data-background="#3F51B5">
+					<section>
+						<h2>What you need</h2>
+					</section>
+
+					<section>
+						<h2>@Controller</h2>
+						<p>
+							Gives a servlet like behaviour managed by Spring (simplified way of work)
+						</p>
+
+						<pre><code class="hljs">
+							@Controller
+							public class HomeController {
+								/* Methods and members */
+							}
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>@RequestMapping</h2>
+						<p>
+							Associate a pattern url with a HTTP verb with a method
+						</p>
+
+						<pre><code class="hljs">
+							@RequestMapping(value = "/signup", method = RequestMethod.GET)
+							public String signup() {
+								return "signup";
+
+							}
+						</code></pre>
+						<p>
+							When sending a GET /signup, the method is called and send the "signup" view located in src/main/resources/templates
+						</p>
+					</section>
+
+					<section>
+						<h2>@PathVariable("nameOfValue")</h2>
+						<p>
+							Get the variable(s) in path
+						</p>
+
+						<pre><code class="hljs">
+							@RequestMapping("/posts/{username}")
+							public String postByUserName(@PathVariable("username") String username){
+								/* render the view needed*/
+							}
+						</code></pre>
+					</section>
+
+
+					<section>
+						<h2>@RequestParam("value")</h2>
+						<p>
+							Get the request parameter (query or body, dependending on the verb)
+						</p>
+
+						<pre><code class="hljs">
+							@RequestMapping(value = "/", method = RequestMethod.POST)
+							public String login(@RequestParam("email") String mail, @RequestParam("password") String password){
+								/* render the view needed*/
+							}
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Render variables</h2>
+						<p>
+							Use the "Model" class
+						</p>
+
+						<pre><code class="hljs">
+							@RequestMapping("/signup")
+							public String signup(Model model) {
+								model.addAttribute("error","This is an error");
+								return "signup";
+							}
+						</code></pre>
+						<p>To display it on the view part (src/main/resources/templates/inscription.html), using Thymeleaf template engine</p>
+						<pre><code class="html">
+							<p th:text="${error}"></p>
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Description thymeleaf in HTML</h2>
+						<pre><code class="html">
+							<!-- <html xmlns:th="http://www.thymeleaf.org">
+							<head th:include="fragments/header :: inclusion"></head>-->
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Session to manage user connection</h2>
+						<pre><code class="hljs">
+							@RequestMapping("/")
+							public String home(HttpSession session){
+								/* Set an attribute in session */
+								session.setAttribute("user", "I m a user !");
+
+								/* Destroy a session */
+								session.invalidate();
+								return "index";
+							}
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h2>Let'start</h2>
+				</section>
+
+				<section>
+					<section>
+						<h2>Teams</h2>
+						<p>
+							Work on team of 2-3 persons
+						</p>
+						<p>
+							Github as SCM to manage source between mates
+						</p>
+					</section>
+
+
+					<section>
+						<h2>Tools</h2>
+						<p>
+							Free to chose frontend / backend technology.
+						</p>
+
+						<p>
+							Mendatory Spring framework (REST or MVC)
+						</p>
+
+						<p>
+							Data representation (free database) or fake implementation
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<h2>Expectations</h2>
+					<ul>
+						<li>Pretty application</li>
+						<li>Covering business spec (document)</li>
+						<li>Work on team</li>
+						<li>Autonomy & share</li>
+						<li>Unit tests</li>
+					</ul>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			history: true,
+			center: true,
+
+			transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/zoom-js/zoom.js', async: true },
+				{ src: 'plugin/notes/notes.js', async: true }
+			]
+		});
+
+		</script>
+
+	</body>
+	</html>
